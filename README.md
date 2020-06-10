@@ -1,4 +1,4 @@
-# JAVA-BSC - Java SE alapok
+# JAVA-SE8 - Java 8 plusz újdonságok, funkcionális programozás
 
 ## Javasolt haladás
 
