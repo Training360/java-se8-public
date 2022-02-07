@@ -1,14 +1,14 @@
 package zonedaylight;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class WorkHoursCalculatorTest {
 
@@ -20,7 +20,7 @@ public class WorkHoursCalculatorTest {
         // When
         WorkHoursCalculator whc = new WorkHoursCalculator(2013, Month.MARCH, 5, 1, ZoneId.of("America/Chicago"));
         //Then
-        assertThat(FORMATTER.format(whc.getStartDateTime()), equalTo("0100, 05 Mar 2013"));
+        assertEquals("0100, 05 Mar 2013", FORMATTER.format(whc.getStartDateTime()));
     }
 
     @Test
@@ -30,7 +30,7 @@ public class WorkHoursCalculatorTest {
         // When/
         WorkHoursCalculator whc = new WorkHoursCalculator(2013, month, 1, 1, ZoneId.of("America/Chicago"));
         //Then
-        assertThat(whc.calculateHours(2013, month, 16, 1), equalTo(359L));
+        assertEquals(359L, whc.calculateHours(2013, month, 16, 1));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class WorkHoursCalculatorTest {
         // When/
         WorkHoursCalculator whc = new WorkHoursCalculator(2013, month, 1, 1, ZoneId.of("America/Chicago"));
         //Then
-        assertThat(whc.calculateHours(2013, month, 16, 1), equalTo(360L));
+        assertEquals(360L, whc.calculateHours(2013, month, 16, 1));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class WorkHoursCalculatorTest {
         // When/
         WorkHoursCalculator whc = new WorkHoursCalculator(2013, month, 1, 1, ZoneId.of("America/Chicago"));
         //Then
-        assertThat(whc.calculateHours(2013, month, 16, 1), equalTo(361L));
+        assertEquals(361L, whc.calculateHours(2013, month, 16, 1));
     }
 
     @Test
@@ -58,6 +58,6 @@ public class WorkHoursCalculatorTest {
         // When/
         WorkHoursCalculator whc = new WorkHoursCalculator(2013, Month.MARCH, 1, 1, ZoneId.of("America/Chicago"));
         //Then
-        assertThat(whc.calculateHours(2013, Month.APRIL, 11, 1), equalTo(983L));
+        assertEquals(983L, whc.calculateHours(2013, Month.APRIL, 11, 1));
     }
 }

@@ -1,39 +1,35 @@
 package duration;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 import java.time.Duration;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class WorkHoursCalculatorTest {
 
     private WorkHoursCalculator whc;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         whc = new WorkHoursCalculator();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         whc = null;
     }
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testAddWorkTimeAsDuration() {
         //Given
         whc.addWorkTime(Duration.ofHours(6));
         //Then
-        assertThat(whc.getWorkDuration().toMinutes(), equalTo(360L));
+        assertEquals(360L, whc.getWorkDuration().toMinutes());
     }
 
     @Test
@@ -42,25 +38,20 @@ public class WorkHoursCalculatorTest {
         whc.addWorkTime(1, 2, 30);
         whc.addWorkTime(0, 2, 0);
         //Then
-        assertThat(whc.getWorkDuration().toMinutes(), equalTo(1710L));
+        assertEquals(1710L, whc.getWorkDuration().toMinutes());
     }
 
     @Test
     public void emptyParameterShouldThrowException() throws IllegalArgumentException {
-        // Given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Parameter must not be empty!");
-        // When
-        new WorkHoursCalculator().addWorkTime("");
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> new WorkHoursCalculator().addWorkTime(""));
+        assertEquals("Parameter must not be empty!", ex.getMessage());
     }
 
     @Test
     public void invalidParameterShouldThrowException() throws IllegalArgumentException {
-        // Given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Parameter must match PnDTnHnM pattern, but found:");
-        // When
-        new WorkHoursCalculator().addWorkTime("01:02:30");
+
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> new WorkHoursCalculator().addWorkTime("01:02:30"));
+        assertEquals("Parameter must match PnDTnHnM pattern, but found: 01:02:30", ex.getMessage());
     }
 
     @Test
@@ -69,7 +60,7 @@ public class WorkHoursCalculatorTest {
         whc.addWorkTime("P1DT2H30M");
         whc.addWorkTime("P0DT2H0M");
         //Then
-        assertThat(whc.getWorkDuration().toMinutes(), equalTo(1710L));
+        assertEquals(1710L, whc.getWorkDuration().toMinutes());
     }
 
     @Test
@@ -78,7 +69,7 @@ public class WorkHoursCalculatorTest {
         whc.addWorkTime("P1DT2H30M");
         whc.addWorkTime("P0DT2H0M");
         //Then
-        assertThat(whc.calculateWorkHours(), equalTo(28));
+        assertEquals(28, whc.calculateWorkHours());
     }
 
     @Test
@@ -86,6 +77,6 @@ public class WorkHoursCalculatorTest {
         //When
         whc.addWorkTime("P1DT2H30M");
         //Then
-        assertThat(whc.toString(), equalTo("Days: 1, hours: 2, minutes: 30"));
+        assertEquals("Days: 1, hours: 2, minutes: 30", whc.toString());
     }
 }

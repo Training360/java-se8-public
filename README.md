@@ -1,13 +1,5 @@
 # JAVA-SE8 - Java 8 plusz újdonságok, funkcionális programozás
 
-## Javasolt haladás
-
-* Először nézd meg a videót! A videóban szereplő forráskódot a [demos](demos) könyvtárban találod.
-* Dolgozd fel a videóhoz tartozó írott anyagot, amelynek itt találod a tartalomjegyzékét, és a következő részekből áll:
-	* Olvasd el a megfelelő elméleti részt, értelmezd!
-	* Próbálj válaszolni az ellenőrző kérdésekre!
-	* Old meg a gyakorlati feladatot, melynek itt találod a feladatleírását. Dolgozhatsz ugyanabba a projektbe. Minden leckéhez hozz létre külön csomagot! Figyelj, hogy a minden leckéhez vannak tesztesetek, ezeket másold be a projektedbe!
-
 ## Tartalomjegyzék
 
 * [interfacedefaultmethods - Default interfész metódusok](examples/interfacedefaultmethods/README.md)

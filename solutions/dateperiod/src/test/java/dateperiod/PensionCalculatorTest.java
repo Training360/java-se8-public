@@ -1,19 +1,16 @@
 package dateperiod;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Period;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class PensionCalculatorTest {
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testSumEmploymentPeriods() {
@@ -23,10 +20,10 @@ public class PensionCalculatorTest {
         pc.addEmploymentPeriod(Period.of(1, 12, 3));
 
         //Then
-        assertThat(pc.sumEmploymentPeriods().getYears(), equalTo(4));
-        assertThat(pc.sumEmploymentPeriods().getMonths(), equalTo(2));
-        assertThat(pc.sumEmploymentPeriods().getDays(), equalTo(7));
-        assertThat(pc.sumEmploymentPeriods().toString(), equalTo("P4Y2M7D"));
+        assertEquals(4, pc.sumEmploymentPeriods().getYears());
+        assertEquals(2, pc.sumEmploymentPeriods().getMonths());
+        assertEquals(7, pc.sumEmploymentPeriods().getDays());
+        assertEquals("P4Y2M7D", pc.sumEmploymentPeriods().toString());
     }
 
     @Test
@@ -36,17 +33,16 @@ public class PensionCalculatorTest {
         PensionCalculator pc = new PensionCalculator();
 
         //Then
-        assertThat(pc.calculateTotalDays(pc.modifyByDays(period, 40)), equalTo(475));
-        assertThat(pc.calculateTotalDays(pc.modifyByDays(period, -40)), equalTo(395));
+        assertEquals(475, pc.calculateTotalDays(pc.modifyByDays(period, 40)));
+        assertEquals(395, pc.calculateTotalDays(pc.modifyByDays(period, -40)));
     }
 
     @Test
     public void nullParameterShouldThrowException() throws NullPointerException {
-        // Given
-        exception.expect(NullPointerException.class);
-        exception.expectMessage("Null parameters are not allowed!");
-        // When
-        new PensionCalculator().getPeriodBetweenDates(null, LocalDate.of(2005, 2, 5));
+        Exception ex = assertThrows(NullPointerException.class, () -> {
+            new PensionCalculator().getPeriodBetweenDates(null, LocalDate.of(2005, 2, 5));
+        });
+        assertEquals("Null parameters are not allowed!", ex.getMessage());
     }
 
     @Test
@@ -56,34 +52,31 @@ public class PensionCalculatorTest {
         //When
         Period period = pc.getPeriodBetweenDates(LocalDate.of(2000, 1, 3), LocalDate.of(2005, 2, 5));
         //Then
-        assertThat(pc.calculateTotalDays(period), equalTo(1857));
+        assertEquals(1857, pc.calculateTotalDays(period));
     }
 
     @Test
     public void emptyFromDateParameterShouldThrowException() throws IllegalArgumentException {
-        // Given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Empty from date string, cannot use");
-        // When
-        new PensionCalculator().getPeriodBetweenDates("", "2010-12-01", "yyyy-MM-dd");
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
+            new PensionCalculator().getPeriodBetweenDates("", "2010-12-01", "yyyy-MM-dd");
+        });
+        assertEquals("Empty from date string, cannot use: ", ex.getMessage());
     }
 
     @Test
     public void emptyToDateParameterShouldThrowException() throws IllegalArgumentException {
-        // Given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Empty to date string, cannot use");
-        // When
-        new PensionCalculator().getPeriodBetweenDates("2010-12-01", "", "yyyy-MM-dd");
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
+            new PensionCalculator().getPeriodBetweenDates("2010-12-01", "", "yyyy-MM-dd");
+        });
+        assertEquals("Empty to date string, cannot use: ", ex.getMessage());
     }
 
     @Test
     public void emptyPatternParameterShouldThrowException() throws IllegalArgumentException {
-        // Given
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Empty pattern string, cannot use");
-        // When
-        new PensionCalculator().getPeriodBetweenDates("2010-12-01", "2012-04-05", "");
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
+            new PensionCalculator().getPeriodBetweenDates("2010-12-01", "2012-04-05", "");
+        });
+        assertEquals("Empty pattern string, cannot use: ", ex.getMessage());
     }
 
     @Test
@@ -93,6 +86,6 @@ public class PensionCalculatorTest {
         //When
         Period period = pc.getPeriodBetweenDates("2010-12-01", "2012-12-01", "yyyy-MM-dd");
         //Then
-        assertThat(pc.calculateTotalDays(period), equalTo(730));
+        assertEquals(730, pc.calculateTotalDays(period));
     }
 }

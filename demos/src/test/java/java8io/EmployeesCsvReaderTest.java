@@ -1,9 +1,7 @@
 package java8io;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,68 +12,57 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeesCsvReaderTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    @TempDir
+    Path tempDir;
 
     private EmployeesCsvReader employeesCsvReader = new EmployeesCsvReader();
 
     @Test
     public void testNumberOfCsvFiles() throws IOException {
-        temporaryFolder.newFile("foo.csv");
-        temporaryFolder.newFile("bar.csv");
-        temporaryFolder.newFile("not_a_csv.txt");
-        temporaryFolder.newFile("another_not_a_csv.docx");
-        long number = employeesCsvReader.numberOfCsvFiles(temporaryFolder.getRoot().toPath());
+        Files.createFile(tempDir.resolve("foo.csv"));
+        Files.createFile(tempDir.resolve("bar.csv"));
+        Files.createFile(tempDir.resolve("not_a_csv.txt"));
+        Files.createFile(tempDir.resolve("another_not_a_csv.docx"));
+        long number = employeesCsvReader.numberOfCsvFiles(tempDir);
         assertEquals(2, number);
     }
 
     @Test
     public void testLargestCsvFiles() throws IOException {
-        temporaryFolder.newFolder("dir1");
-        File f = temporaryFolder.newFile("dir1/foo.csv");
-        Files.write(f.toPath(), "aaa".getBytes(StandardCharsets.UTF_8));
-        File f2 = temporaryFolder.newFile("dir1/bar.csv");
-        Files.write(f2.toPath(), "bbbbbb".getBytes(StandardCharsets.UTF_8));
-        temporaryFolder.newFile("dir1/not_a_csv.txt");
-        temporaryFolder.newFile("dir1/another_not_a_csv.docx");
+        Files.createDirectory(tempDir.resolve("dir1"));
+        Files.write(tempDir.resolve("dir1/foo.csv"), "aaa".getBytes(StandardCharsets.UTF_8));
+        Files.write(tempDir.resolve("dir1/bar.csv"), "bbbbbb".getBytes(StandardCharsets.UTF_8));
+        Files.createFile(tempDir.resolve("dir1/not_a_csv.txt"));
+        Files.createFile(tempDir.resolve("dir1/another_not_a_csv.docx"));
 
-        temporaryFolder.newFolder("dir2");
-        File f3 = temporaryFolder.newFile("dir2/foo.csv");
-        Files.write(f3.toPath(), "ccc".getBytes(StandardCharsets.UTF_8));
-        temporaryFolder.newFile("dir2/bar.csv");
-        File f4 = temporaryFolder.newFile("dir2/not_a_csv.txt");
-        Files.write(f4.toPath(), "ddddddddd".getBytes(StandardCharsets.UTF_8));
-        temporaryFolder.newFile("dir2/another_not_a_csv.docx");
+        Files.createDirectory(tempDir.resolve("dir2"));
+        Files.write(tempDir.resolve("dir2/foo.csv"), "ccc".getBytes(StandardCharsets.UTF_8));
+        Files.write(tempDir.resolve("dir2/not_a_csv.txt"), "ddddddddd".getBytes(StandardCharsets.UTF_8));
+        Files.createFile(tempDir.resolve("dir2/another_not_a_csv.docx"));
 
-        Path largest = employeesCsvReader.largestCsvFile(temporaryFolder.getRoot().toPath());
+        Path largest = employeesCsvReader.largestCsvFile(tempDir);
         assertTrue(largest.endsWith("dir1/bar.csv"));
     }
 
     @Test
     public void testLargestCsvFilesWithEmptyDir() {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage("Contains no CSV file");
-
-        employeesCsvReader.largestCsvFile(temporaryFolder.getRoot().toPath());
+        Exception e = assertThrows(IllegalArgumentException.class, () -> {
+            employeesCsvReader.largestCsvFile(tempDir);
+        });
+        assertEquals("Contains no CSV file", e.getMessage());
     }
 
     @Test
     public void testReadEmployees() throws IOException {
-        File f = temporaryFolder.newFile();
-        Files.write(f.toPath(),
-                ("1,John Doe,180000\n" +
-                "2,Jane Doe,200000")
-                        .getBytes(StandardCharsets.UTF_8));
+        Path file = tempDir.resolve("employees.csv");
+        Files.write(file, ("1,John Doe,180000\n" +
+                "2,Jane Doe,200000").getBytes(StandardCharsets.UTF_8));
 
-        List<Employee> employees = employeesCsvReader.readEmployees(f.toPath());
+        List<Employee> employees = employeesCsvReader.readEmployees(file);
         assertEquals(Arrays.asList("John Doe", "Jane Doe"),
                 employees.stream().map(Employee::getName).collect(Collectors.toList()));
         assertEquals(Arrays.asList(180_000, 200_000),

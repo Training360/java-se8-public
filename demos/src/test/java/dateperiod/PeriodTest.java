@@ -1,29 +1,28 @@
 package dateperiod;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Period;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PeriodTest {
 
     @Test
     public void testPeriod() {
         Period period = Period.ofDays(5);
-        assertThat(period.getDays(), equalTo(5));
+        assertEquals(5, period.getDays());
 
         Period period1 = Period.of(1, 2, 3);
-        assertThat(period1.getMonths(), equalTo(2));
+        assertEquals(2, period1.getMonths());
     }
 
     @Test
     public void testParse() {
         String s = "P2Y3M";
         Period period = Period.parse(s);
-        assertThat(period.getMonths(), equalTo(3));
+        assertEquals(3, period.getMonths());
     }
 
     @Test
@@ -32,7 +31,7 @@ public class PeriodTest {
         LocalDate localDate1 = LocalDate.of(2018, 1, 9);
 
         Period period = Period.between(localDate, localDate1);
-        assertThat(period.getDays(), equalTo(-3));
+        assertEquals(-3, period.getDays());
     }
 
     @Test
@@ -46,13 +45,13 @@ public class PeriodTest {
         LocalDate localDate = LocalDate.of(2018, 1, 12);
         Period period = Period.ofDays(3);
         LocalDate localDate1 = localDate.plus(period);
-        assertThat(localDate1.getDayOfMonth(), equalTo(15));
+        assertEquals(15, localDate1.getDayOfMonth());
     }
 
     @Test
     public  void testPeriodPlus() {
         Period period = Period.ofDays(2);
         Period period1 = period.plusMonths(2);
-        assertThat(period1.toString(), equalTo("P2M2D"));
+        assertEquals("P2M2D", period1.toString());
     }
 }
