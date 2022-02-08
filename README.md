@@ -2,16 +2,16 @@
 
 ## Tartalomjegyzék
 
-* [interfacedefaultmethods - Default interfész metódusok](examples/interfacedefaultmethods/README.md)
-* [interfacestaticmethods - Statikus interfész metódusok](examples/interfacestaticmethods/README.md)
-* [lambdaintro - Bevezetés a lambda kifejezések használatába](examples/lambdaintro/README.md)
-* [lambdaoptional - Optional használata](examples/lambdaoptional/README.md)
-* [lambdacomparator - Comparator módosítások](examples/lambdacomparator/README.md)
-* [lambdastreams - Streamek](examples/lambdastreams/README.md)
-* [lambdaintermediate - Intermediate műveletek](examples/lambdaintermediate/README.md)
-* [lambdaprimitives - Primitívek használata streamekben](examples/lambdaprimitives/README.md)
-* [lambdacollectors - Collectors](examples/lambdacollectors/README.md)
-* [datenewtypes - Új típusok, LocalDate, LocalTime, parse](examples/datenewtypes/README.md)
-* [dateperiod - Period](examples/dateperiod/README.md)
-* [dateduration - Duration](examples/dateduration/README.md)
-* [datedaylight - Időzónák és téli-nyári időszámítás](examples/datedaylight/README.md)
+* interfacedefaultmethods - Default interfész metódusok
+* interfacestaticmethods - Statikus interfész metódusok
+* lambdaintro - Bevezetés a lambda kifejezések használatába
+* lambdaoptional - Optional használata
+* lambdacomparator - Comparator módosítások
+* lambdastreams - Streamek
+* lambdaintermediate - Intermediate műveletek
+* lambdaprimitives - Primitívek használata streamekben
+* lambdacollectors - Collectors
+* datenewtypes - Új típusok, LocalDate, LocalTime, parse
+* dateperiod - Period
+* dateduration - Duration
+* datedaylight - Időzónák és téli-nyári időszámítás
